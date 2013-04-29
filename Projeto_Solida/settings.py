@@ -125,7 +125,6 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'portal',
-    'floppyforms',
     'bootstrap_toolkit',
     'invitation',
     'registration',
@@ -160,9 +159,12 @@ LOGGING = {
     }
 }
 
-INVITE_MODE = True
-ACCOUNT_INVITATION_DAYS = 30
-INVITATIONS_PER_USER = 999999999999
+INVITATION_INVITE_ONLY = True
+INVITATION_INITIAL_INVITATIONS = 999999999999
 
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'brunopelvico@gmail.com'
+EMAIL_HOST_PASSWORD = 'riba0676'
+EMAIL_USE_TLS = True
