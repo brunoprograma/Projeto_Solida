@@ -1,17 +1,35 @@
-from django.conf.urls import patterns, include, url
-
-# Uncomment the next two lines to enable the admin:
+from django.conf.urls.defaults import *
 from django.contrib import admin
+from django.conf import settings
+
+from registration.forms import RegistrationFormTermsOfService
+from invitation.views import register
+
 admin.autodiscover()
 
-urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'Projeto_Solida.views.home', name='home'),
-    # url(r'^Projeto_Solida/', include('Projeto_Solida.foo.urls')),
+# Change URLs given the INVITE_MODE setting, useful for tests
+if getattr(settings, 'INVITE_MODE', False):
+    urlpatterns = patterns('',
+        url(r'^accounts/register/$',    register,
+                                            {
+                                                'form_class': RegistrationFormTermsOfService,
+                                                'backend': 'invitation.backends.InvitationBackend',
+                                            },
+                                            name='registration_register'),
+    )
+else:
+    urlpatterns = patterns('',
+        url(r'^accounts/register/$',    register,
+                                            {
+                                                'form_class': RegistrationFormTermsOfService,
+                                                'backend': 'registration.backends.default.DefaultBackend',
+                                            },
+                                            name='registration_register'),
+    )
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+urlpatterns += patterns('',
+    url(r'^accounts/',              include('invitation.urls')),
+    url(r'^accounts/',              include('registration.backends.default.urls')),
+    url(r'^admin/',                 include(admin.site.urls)),
 
-    # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
 )

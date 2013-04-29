@@ -125,6 +125,10 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'portal',
+    'floppyforms',
+    'bootstrap_toolkit',
+    'invitation',
+    'registration',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -155,3 +159,10 @@ LOGGING = {
         },
     }
 }
+
+INVITE_MODE = True
+ACCOUNT_INVITATION_DAYS = 30
+INVITATIONS_PER_USER = 999999999999
+
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
